@@ -1,0 +1,392 @@
+<!-- <div class="container"> -->
+<br />
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <input
+        type="file"
+        class="upload"
+        (change)="handleFileUpload($event.target.files)"
+      />
+    </div>
+  </div>
+  <br />
+  <div class="row" *ngIf="availablePlayers">
+    <div class="col-12">
+      <div class="u-md-12" pDroppable="players" (onDrop)="dropBack($event)">
+        <p-table
+          #dt
+          [columns]="cols"
+          [value]="availablePlayers"
+          [scrollable]="true"
+          scrollHeight="400px"
+          (sortFunction)="customSort($event)"
+          [customSort]="true"
+          sortField="Rank"
+        >
+          <ng-template pTemplate="caption">
+            Available Players
+            <div style="text-align: right">
+              <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+              <input
+                type="text"
+                pInputText
+                size="30"
+                placeholder="Search..."
+                (input)="dt.filterGlobal($event.target.value, 'contains')"
+                style="width:auto"
+              />
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header" let-cols>
+            <tr style="line-height:10px; font-size:12px">
+              <th
+                *ngFor="let col of cols; let i = index"
+                [ngClass]="i == 2 ? 'lg-width' : 'sm-width'"
+                [pSortableColumn]="col.field"
+              >
+                {{ col.header }}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-player>
+            <tr
+              style="line-height:12px; font-size:14px"
+              pDraggable="players"
+              (onDragStart)="dragStart($event, player)"
+              (onDragEnd)="dragEnd($event)"
+              [ngStyle]="getRowStyle(player)"
+            >
+              <td
+                *ngFor="let col of cols; let i = index"
+                [ngClass]="i == 2 ? 'lg-width' : 'sm-width'"
+              >
+                {{ player[col.field] }}
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+<div class="row" *ngIf="availablePlayers">
+  <div class="col-12">
+    <div>
+      <!--Team Div-->
+      <div
+        class="ui-g-12 ui-md-1 drop-column"
+        pDroppable="players"
+        (onDrop)="drop($event, 1)"
+      >
+        <p-table [value]="team1Players">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{ teams[0] }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-player>
+            <tr
+              style="line-height:8px; font-size:12px"
+              [ngStyle]="getRowStyle(player)"
+              pDraggable="players"
+              (onDragStart)="dragStart($event, player, 1)"
+              (onDragEnd)="dragEnd($event)"
+            >
+              <td>{{ player.Player }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <!--Team Div-->
+      <div
+        class="ui-g-12 ui-md-1 drop-column"
+        pDroppable="players"
+        (onDrop)="drop($event, 2)"
+      >
+        <p-table [value]="team2Players">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{ teams[1] }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-player>
+            <tr
+              style="line-height:8px; font-size:12px"
+              [ngStyle]="getRowStyle(player)"
+              pDraggable="players"
+              (onDragStart)="dragStart($event, player, 2)"
+              (onDragEnd)="dragEnd($event)"
+            >
+              <td>{{ player.Player }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <!--Team Div-->
+      <div
+        class="ui-g-12 ui-md-1 drop-column"
+        pDroppable="players"
+        (onDrop)="drop($event, 3)"
+      >
+        <p-table [value]="team3Players">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{ teams[2] }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-player>
+            <tr
+              style="line-height:8px; font-size:12px"
+              [ngStyle]="getRowStyle(player)"
+              pDraggable="players"
+              (onDragStart)="dragStart($event, player, 3)"
+              (onDragEnd)="dragEnd($event)"
+            >
+              <td>{{ player.Player }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <!--Team Div-->
+      <div
+        class="ui-g-12 ui-md-1 drop-column"
+        pDroppable="players"
+        (onDrop)="drop($event, 4)"
+      >
+        <p-table [value]="team4Players">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{ teams[3] }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-player>
+            <tr
+              style="line-height:8px; font-size:12px"
+              [ngStyle]="getRowStyle(player)"
+              pDraggable="players"
+              (onDragStart)="dragStart($event, player, 4)"
+              (onDragEnd)="dragEnd($event)"
+            >
+              <td>{{ player.Player }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <!--Team Div-->
+      <div
+        class="ui-g-12 ui-md-1 drop-column"
+        pDroppable="players"
+        (onDrop)="drop($event, 5)"
+      >
+        <p-table [value]="team5Players">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{ teams[4] }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-player>
+            <tr
+              style="line-height:8px; font-size:12px"
+              [ngStyle]="getRowStyle(player)"
+              pDraggable="players"
+              (onDragStart)="dragStart($event, player, 5)"
+              (onDragEnd)="dragEnd($event)"
+            >
+              <td>{{ player.Player }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <!--Team Div-->
+      <div
+        class="ui-g-12 ui-md-1 drop-column"
+        pDroppable="players"
+        (onDrop)="drop($event, 6)"
+      >
+        <p-table [value]="team6Players">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{ teams[5] }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-player>
+            <tr
+              style="line-height:8px; font-size:12px"
+              [ngStyle]="getRowStyle(player)"
+              pDraggable="players"
+              (onDragStart)="dragStart($event, player, 6)"
+              (onDragEnd)="dragEnd($event)"
+            >
+              <td>{{ player.Player }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <!--Team Div-->
+      <div
+        class="ui-g-12 ui-md-1 drop-column"
+        pDroppable="players"
+        (onDrop)="drop($event, 7)"
+      >
+        <p-table [value]="team7Players">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{ teams[6] }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-player>
+            <tr
+              style="line-height:8px; font-size:12px"
+              [ngStyle]="getRowStyle(player)"
+              pDraggable="players"
+              (onDragStart)="dragStart($event, player, 7)"
+              (onDragEnd)="dragEnd($event)"
+            >
+              <td>{{ player.Player }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <!--Team Div-->
+      <div
+        class="ui-g-12 ui-md-1 drop-column"
+        pDroppable="players"
+        (onDrop)="drop($event, 8)"
+      >
+        <p-table [value]="team8Players">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{ teams[7] }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-player>
+            <tr
+              style="line-height:8px; font-size:12px"
+              [ngStyle]="getRowStyle(player)"
+              pDraggable="players"
+              (onDragStart)="dragStart($event, player, 8)"
+              (onDragEnd)="dragEnd($event)"
+            >
+              <td>{{ player.Player }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <!--Team Div-->
+      <div
+        class="ui-g-12 ui-md-1 drop-column"
+        pDroppable="players"
+        (onDrop)="drop($event, 9)"
+      >
+        <p-table [value]="team9Players">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{ teams[8] }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-player>
+            <tr
+              style="line-height:8px; font-size:12px"
+              [ngStyle]="getRowStyle(player)"
+              pDraggable="players"
+              (onDragStart)="dragStart($event, player, 9)"
+              (onDragEnd)="dragEnd($event)"
+            >
+              <td>{{ player.Player }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <!--Team Div-->
+      <div
+        class="ui-g-12 ui-md-1 drop-column"
+        pDroppable="players"
+        (onDrop)="drop($event, 10)"
+      >
+        <p-table [value]="team10Players">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{ teams[9] }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-player>
+            <tr
+              style="line-height:8px; font-size:12px"
+              [ngStyle]="getRowStyle(player)"
+              pDraggable="players"
+              (onDragStart)="dragStart($event, player, 10)"
+              (onDragEnd)="dragEnd($event)"
+            >
+              <td>{{ player.Player }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <!--Team Div-->
+      <div
+        class="ui-g-12 ui-md-1 drop-column"
+        pDroppable="players"
+        (onDrop)="drop($event, 11)"
+      >
+        <p-table [value]="team11Players">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{ teams[10] }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-player>
+            <tr
+              style="line-height:8px; font-size:12px"
+              [ngStyle]="getRowStyle(player)"
+              pDraggable="players"
+              (onDragStart)="dragStart($event, player, 11)"
+              (onDragEnd)="dragEnd($event)"
+            >
+              <td>{{ player.Player }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+      <!--Team Div-->
+      <div
+        class="ui-g-12 ui-md-1 drop-column"
+        pDroppable="players"
+        (onDrop)="drop($event, 12)"
+      >
+        <p-table [value]="team12Players">
+          <ng-template pTemplate="header">
+            <tr>
+              <th>{{ teams[11] }}</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-player>
+            <tr
+              style="line-height:8px; font-size:12px"
+              [ngStyle]="getRowStyle(player)"
+              pDraggable="players"
+              (onDragStart)="dragStart($event, player, 12)"
+              (onDragEnd)="dragEnd($event)"
+            >
+              <td>{{ player.Player }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- </div> -->
